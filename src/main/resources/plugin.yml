@@ -1,0 +1,23 @@
+name: ${name}
+main: ${groupId}.${artifactId}
+author: ProjectInfinity
+version: ${version}
+api: ["1.0.0"]
+description: Permission management made simple
+softdepend: [MultiWorld]
+permissions:
+  leetperms.lpinfo:
+    description: 'Allows listing your or another players current permissions.'
+    default: op
+  leetperms.lpsetgroup:
+    description: 'Allows changing the group assigned to a player.'
+    default: op
+  leetperms.lpsave:
+    description: 'Allows saving permission files to disk.'
+    default: op
+  leetperms.lpsetdefault:
+    description: 'Allows setting the default group.'
+    default: op
+  leetperms.lpgroups:
+    description: 'Allows listing available groups.'
+    default: op

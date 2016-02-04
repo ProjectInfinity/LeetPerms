@@ -1,0 +1,5 @@
+auto-save: true
+global-permissions: false
+lock-permission-files: false
+data-provider: yaml
+debug: false

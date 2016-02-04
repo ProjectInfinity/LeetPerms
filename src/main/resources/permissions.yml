@@ -1,0 +1,9 @@
+default: member
+
+groups:
+  member:
+    permissions: []
+    inheritance: []
+    meta: []
+
+users: {}
