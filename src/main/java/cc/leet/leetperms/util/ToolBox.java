@@ -9,4 +9,12 @@ public class ToolBox {
         return decimal.format((System.nanoTime() - start) / 1000000);
     }
 
+    public static boolean isAlphaNumeric(String string) {
+        for(int i = string.length(); i --> 0;) {
+            if(!Character.isLetterOrDigit(string.charAt(i)) )
+                return false;
+        }
+        return true;
+    }
+
 }

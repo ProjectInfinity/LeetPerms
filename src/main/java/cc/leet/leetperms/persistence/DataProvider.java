@@ -18,6 +18,10 @@ public interface DataProvider {
 
     void setDefaultGroup(String group, String world);
 
+    boolean addGroup(String group, String world, HashMap<String, Object> meta);
+
+    PermissionsGroup loadGroup(String group, String world);
+
     ArrayList<PermissionsWorld> getWorlds();
 
     void close();

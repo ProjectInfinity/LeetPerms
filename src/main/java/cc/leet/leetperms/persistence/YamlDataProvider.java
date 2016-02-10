@@ -200,6 +200,111 @@ public class YamlDataProvider implements DataProvider {
     }
 
     @Override
+    public boolean addGroup(String group, String world, HashMap<String, Object> meta) {
+        group = group.toLowerCase();
+        world = plugin.globalPerms ? "permissions" : world.toLowerCase();
+
+        if(!this.permissionsFiles.containsKey(world)) return false;
+
+        Config permFile = this.permissionsFiles.get(world);
+
+        permFile.set("groups." + group + ".permissions", new ArrayList<>());
+
+        if(meta == null) {
+            permFile.set("groups." + group + ".inheritance", new ArrayList<>());
+            permFile.set("groups." + group + ".meta.prefix", "");
+        } else {
+            // TODO: Look for permissions.
+            if(meta.containsKey("prefix")) {
+                permFile.set("groups." + group + ".meta.prefix", meta.get("prefix"));
+            } else {
+                permFile.set("groups." + group + ".meta.prefix", "");
+            }
+
+            if(meta.containsKey("inheritance")) {
+                permFile.set("groups." + group + ".inheritance", meta.get("inheritance"));
+            } else {
+                permFile.set("groups." + group + ".inheritance", new ArrayList<>());
+            }
+        }
+        if(plugin.autoSave) permFile.save();
+
+        PermissionsGroup permGroup = this.loadGroup(group, world);
+        if(permGroup == null) return false;
+
+        plugin.getDataManager().addGroupToMap(permGroup);
+
+        return permFile.get("groups." + group) != null;
+    }
+
+    @Override
+    public PermissionsGroup loadGroup(String group, String world) {
+
+        group = group.toLowerCase();
+        world = world.toLowerCase();
+
+        if(!this.permissionsFiles.containsKey(world)) return null;
+
+        Config permFile = this.permissionsFiles.get(world);
+
+        Object object = permFile.get("groups." + group);
+
+        if(!(object instanceof LinkedHashMap)) return null;
+
+        PermissionsGroup permGroup = new PermissionsGroup(
+                group,
+                world
+        );
+
+        // Check if there are any permissions.
+        if(permFile.get("groups." + group + ".permissions") == null || !(permFile.get("groups." + group + ".permissions") instanceof ArrayList)) {
+            plugin.getLogger().alert(group + " was not loaded in world " + world + " because of missing permissions.");
+            return null;
+        }
+
+        List permissions = permFile.getList("groups." + group + ".permissions");
+
+        if(permissions == null) {
+            plugin.getLogger().error("Missing permissions entry for " + group + " in permissions.yml!");
+            return null;
+        }
+
+        for(Object o : permissions) {
+            String permission = (String) o;
+            boolean isTrue = !permission.startsWith("^");
+            permGroup.addGroupPermission(isTrue ? permission : permission.substring(1), isTrue);
+        }
+
+        // Check if meta is specified.
+        if(permFile.get("groups." + group + ".meta") == null) {
+            plugin.getLogger().alert(group + " was not loaded in world " + world + " because of missing meta.");
+            return null;
+        }
+
+        Object meta = permFile.get("groups." + group + ".meta");
+
+        if(meta instanceof LinkedHashMap) {
+            permGroup.setGroupPrefix(((LinkedHashMap) meta).get("prefix").toString());
+        }
+
+        // Check if inheritance is specified.
+        if(permFile.get("groups." + group + ".inheritance") == null) {
+            plugin.getLogger().alert(group + " was not loaded in world " + world + " because of missing inheritance.");
+            return null;
+        }
+
+        Object inheritance = permFile.get("groups." + group + ".inheritance");
+
+        if(inheritance instanceof ArrayList) {
+            for(Object inheritGroup : (ArrayList) inheritance) {
+                permGroup.addGroupInheritance(inheritGroup.toString());
+            }
+        }
+
+        return permGroup;
+    }
+
+    @Override
     public ArrayList<PermissionsWorld> getWorlds() {
         ArrayList<PermissionsWorld> worlds = new ArrayList<>();
         if(plugin.globalPerms) {

@@ -265,6 +265,14 @@ public class DataManager {
         return this.groups.containsKey(world.toLowerCase() + "_" + group.toLowerCase());
     }
 
+    public boolean addGroup(String group, String world, HashMap<String, Object> meta) {
+        return !(groupExists(group, world) || !worldExists(world)) && this.provider.addGroup(group, world, meta);
+    }
+
+    public void addGroupToMap(PermissionsGroup permGroup) {
+        this.groups.put(permGroup.getGroupWorld() + "_" + permGroup.getGroupName(), permGroup);
+    }
+
     public PermissionsGroup getGroup(String groupPointer) {
         return this.groups.containsKey(groupPointer) ? this.groups.get(groupPointer) : null;
     }
