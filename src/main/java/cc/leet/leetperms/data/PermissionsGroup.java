@@ -15,7 +15,8 @@ public class PermissionsGroup {
     private ArrayList<String> groupInheritance;
 
     public PermissionsGroup() {
-        groupPermissions = new HashMap<>();
+        this.groupPermissions = new HashMap<>();
+        this.groupPrefix = "";
     }
 
     public PermissionsGroup(String groupName, String groupWorld) {

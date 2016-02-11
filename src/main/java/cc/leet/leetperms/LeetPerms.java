@@ -29,6 +29,7 @@ public class LeetPerms extends PluginBase {
         /** Register all commands **/
         getServer().getCommandMap().register("lpinfo", new LpInfoCommand(plugin));
         getServer().getCommandMap().register("lpgroups", new LpGroupsCommand(plugin));
+        getServer().getCommandMap().register("lpgroupinfo", new LpGroupInfoCommand(plugin));
 
         // All commands that let you change permissions should be placed below this line.
         if(!isPermissionsLocked) {

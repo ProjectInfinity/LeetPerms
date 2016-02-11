@@ -282,7 +282,7 @@ public class DataManager {
     }
 
     public PermissionsGroup getGroup(String group, String world) {
-        return this.groups.containsKey(world.toLowerCase() + "_" + group.toLowerCase()) ? this.groups.get(world.toLowerCase() + "_" + group.toLowerCase()) : null;
+        return this.getGroup(world.toLowerCase() + "_" + group.toLowerCase());
     }
 
     public void shutdown() {

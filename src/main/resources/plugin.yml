@@ -24,3 +24,6 @@ permissions:
   leetperms.lpaddgroup:
     description: 'Allows adding a group to a world.'
     default: op
+  leetperms.lpgroupinfo:
+    description: 'Allows viewing group information.'
+    default: op
