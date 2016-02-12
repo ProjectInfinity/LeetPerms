@@ -76,10 +76,10 @@ public class DataManager {
     }
 
     public boolean setPermission(String group, String world, String permission) {
-        // TODO: Permissions doesn't seem to be active immediately after recalculating and updating permissions??
         boolean result = this.provider.setPermission(group, world, permission);
         if(result) {
             // All done, now recalculate permissions and update player permissions.
+            this.reloadGroups();
             this.recalculatePermissions();
             if(plugin.getServer().getLevelByName(world) != null) this.updatePermissions(plugin.getServer().getLevelByName(world));
         }
@@ -126,6 +126,26 @@ public class DataManager {
 
     public void removeAttachment(String player) {
         this.attachments.remove(player.toLowerCase());
+    }
+
+    /**
+     * Reloads the groups from the provider and puts them into the map.
+     */
+    public void reloadGroups() {
+        this.groups.clear();
+        for(PermissionsGroup group : provider.getGroups()) {
+            this.groups.put(group.getGroupWorld() + "_" + group.getGroupName(), group);
+        }
+    }
+
+    /**
+     * Reloads the worlds from the provider and puts them into the map.
+     */
+    public void reloadWorlds() {
+        this.worlds.clear();
+        for(PermissionsWorld world : provider.getWorlds()) {
+            this.worlds.put(world.getWorldName(), world);
+        }
     }
 
     /**
