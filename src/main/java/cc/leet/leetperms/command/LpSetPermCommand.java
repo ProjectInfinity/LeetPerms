@@ -62,41 +62,49 @@ public class LpSetPermCommand extends Command {
         }
 
         boolean result = false;
+        String nodeMsg = "";
 
         switch(type) {
 
-            // TODO: Provide specialized permission string for output.
+            // True permission node
             case 0:
-                if(!Character.isLetterOrDigit(permission.substring(0, 1).toCharArray()[0])) {
+                if(!Character.isLetterOrDigit(permission.substring(0, 1).toCharArray()[0]) || permission.contains(":")) {
                     sender.sendMessage(TextFormat.RED + permission + " is a invalid permission node.");
                     return true;
                 }
                 result = this.dataManager.setPermission(group, world, permission);
+                nodeMsg = permission;
                 break;
 
+            // ^node
             case 1:
                 result = this.dataManager.setPermission(group, world, permission);
+                nodeMsg = permission.substring(1);
                 break;
 
+            // -node
             case 2:
                 StringBuilder node = new StringBuilder();
                 result = this.dataManager.setPermission(group, world, node.append(permission.substring(1)).insert(0, "^").toString());
+                nodeMsg = permission.substring(1);
                 break;
 
+            // node:false
             case 3:
                 StringBuilder permNode = new StringBuilder();
                 result = this.dataManager.setPermission(group, world, permNode.append(permission.split(":")[0]).insert(0, "^").toString());
+                nodeMsg = permNode.toString().substring(1);
                 break;
 
         }
 
         if(result)
-            sender.sendMessage(TextFormat.GREEN + "Set permission node " + TextFormat.AQUA + (isTrue ? permission : permission.substring(1)) +
+            sender.sendMessage(TextFormat.GREEN + "Set permission node " + TextFormat.AQUA + nodeMsg +
                     TextFormat.GREEN + " to " + TextFormat.AQUA + isTrue + TextFormat.GREEN + " for group " + TextFormat.AQUA +
                     group + TextFormat.GREEN + " in world " + TextFormat.AQUA + world + TextFormat.GREEN + "."
             );
         else
-            sender.sendMessage(TextFormat.RED + "Failed to set permission node " + TextFormat.AQUA + (isTrue ? permission : permission.substring(1)) +
+            sender.sendMessage(TextFormat.RED + "Failed to set permission node " + TextFormat.AQUA + nodeMsg +
                     TextFormat.RED + " to " + TextFormat.AQUA + isTrue + TextFormat.RED + " for group " + TextFormat.AQUA +
                     group + TextFormat.RED + " in world " + TextFormat.AQUA + world + TextFormat.RED + "."
             );
