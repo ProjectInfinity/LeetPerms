@@ -44,12 +44,12 @@ public class LpGroupInfoCommand extends Command {
             world = plugin.globalPerms ? "global" : (args.length > 1 ? args[1] : ((Player) sender).getLevel().getName());
         }
 
-        if(!plugin.getDataManager().worldExists(world)) {
+        if(!dataManager.worldExists(world)) {
             sender.sendMessage(TextFormat.RED + "Target world " + TextFormat.AQUA + world + TextFormat.RED + " does not exist.");
             return true;
         }
 
-        if(!plugin.getDataManager().groupExists(group, world)) {
+        if(!dataManager.groupExists(group, world)) {
             sender.sendMessage(TextFormat.RED + "Target group " + TextFormat.AQUA + group + TextFormat.RED + " does not exist in world " + TextFormat.AQUA + world + TextFormat.RED);
             return true;
         }

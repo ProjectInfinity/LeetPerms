@@ -27,3 +27,6 @@ permissions:
   leetperms.lpgroupinfo:
     description: 'Allows viewing group information.'
     default: op
+  leetperms.lpsetperm:
+    description: 'Allows setting permission nodes.'
+    default: op

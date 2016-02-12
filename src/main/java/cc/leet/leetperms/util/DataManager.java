@@ -8,6 +8,7 @@ import cc.leet.leetperms.data.PermissionsWorld;
 import cc.leet.leetperms.persistence.DataProvider;
 import cc.leet.leetperms.persistence.YamlDataProvider;
 import cn.nukkit.Player;
+import cn.nukkit.level.Level;
 import cn.nukkit.permission.PermissionAttachment;
 
 import java.util.*;
@@ -74,9 +75,35 @@ public class DataManager {
         return this.attachments.containsKey(player.toLowerCase());
     }
 
+    public boolean setPermission(String group, String world, String permission) {
+        // TODO: Permissions doesn't seem to be active immediately after recalculating and updating permissions??
+        boolean result = this.provider.setPermission(group, world, permission);
+        if(result) {
+            // All done, now recalculate permissions and update player permissions.
+            this.recalculatePermissions();
+            if(plugin.getServer().getLevelByName(world) != null) this.updatePermissions(plugin.getServer().getLevelByName(world));
+        }
+        return result;
+    }
+
     public void updatePermissions(Player player) {
         this.updatePermissions(player.getName(), (plugin.globalPerms ? "global" : player.getLevel().getName()));
     }
+
+    public void updatePermissions(Level level) {
+        double start = 0D;
+
+        if(plugin.debug) {
+            start = System.nanoTime();
+        }
+
+        level.getPlayers().values().forEach(this::updatePermissions);
+
+        if(plugin.debug) {
+            plugin.getLogger().info("Updating permissions for all players in world " + level.getName() + " took: " + ToolBox.getTimeSpent(start) + "ms");
+        }
+    }
+
     public void updatePermissions(String name,  String world) {
 
         Player player = plugin.getServer().getPlayer(name);

@@ -12,6 +12,10 @@ public interface DataProvider {
 
     HashMap<String, Object> getPlayer(String player, String world);
 
+    boolean setPermission(String group, String world, String permission);
+
+    boolean setPlayerPermission(String player, String world, String permission);
+
     String getPlayerGroup(String player, String world);
 
     void setPlayerGroup(String player, String group, String world);
