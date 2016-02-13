@@ -50,7 +50,10 @@ public class LpGroupsCommand extends Command {
                 msg.append(color ? TextFormat.WHITE : TextFormat.GRAY).append(group).append(", ");
                 color = !color;
             }
-            sender.sendMessage(msg.toString().substring(0, msg.length() - 2));
+            if(msg.length() == 0)
+                sender.sendMessage(TextFormat.GRAY + "No groups.");
+            else
+                sender.sendMessage(msg.toString().substring(0, msg.length() - 2));
         }
 
         return true;
