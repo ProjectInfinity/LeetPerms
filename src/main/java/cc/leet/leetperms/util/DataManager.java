@@ -304,6 +304,21 @@ public class DataManager {
         return this.worlds.values().toArray(new PermissionsWorld[this.worlds.size()]);
     }
 
+    public void loadWorld(String world) {
+        world = world.toLowerCase();
+
+        if(plugin.getServer().getLevelByName(world) == null || this.worlds.containsKey(world)) return;
+
+        PermissionsWorld permWorld = this.provider.loadWorld(world);
+        if(permWorld == null) return;
+
+        this.worlds.put(world, permWorld);
+
+        for(PermissionsGroup permGroup : this.provider.getGroupsFromWorld(world)) {
+            this.groups.put(world + "_" + permGroup.getGroupName(), permGroup);
+        }
+    }
+
     public boolean worldExists(String world) {
         return this.worlds.containsKey(world.toLowerCase());
     }

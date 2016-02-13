@@ -1,11 +1,13 @@
 package cc.leet.leetperms.listener;
 
 import cc.leet.leetperms.LeetPerms;
+import cc.leet.leetperms.util.ToolBox;
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.entity.EntityLevelChangeEvent;
+import cn.nukkit.event.level.LevelLoadEvent;
 import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerKickEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
@@ -39,5 +41,21 @@ public class PermsListener implements Listener {
         plugin.getDataManager().updatePermissions((Player) event.getEntity());
     }
 
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onLevelLoad(LevelLoadEvent event) {
+        if(plugin.getDataManager().worldExists(event.getLevel().getName())) return;
+
+        double start = 0D;
+
+        if(plugin.debug) {
+            start = System.nanoTime();
+        }
+
+        plugin.getDataManager().loadWorld(event.getLevel().getName());
+
+        if(plugin.debug) {
+            plugin.getLogger().info("Creating world file and loading world " + event.getLevel().getName() + " took " + ToolBox.getTimeSpent(start) + "ms");
+        }
+    }
 
 }

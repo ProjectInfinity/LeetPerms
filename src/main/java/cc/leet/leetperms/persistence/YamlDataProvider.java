@@ -61,6 +61,7 @@ public class YamlDataProvider implements DataProvider {
         if(plugin.debug) {
             start = System.nanoTime();
         }
+
         Map<String, PermissionsGroup> groups = new HashMap<>();
 
         if(plugin.globalPerms) {
@@ -142,6 +143,12 @@ public class YamlDataProvider implements DataProvider {
             }
         }
         return groups;
+    }
+
+    @Override
+    public ArrayList<PermissionsGroup> getGroupsFromWorld(String world) {
+        if(!this.permissionsFiles.containsKey(world)) return null;
+        return new ArrayList<>(getGroupsFromWorld(world, this.permissionsFiles.get(world)).values());
     }
 
     @Override
@@ -331,6 +338,26 @@ public class YamlDataProvider implements DataProvider {
         }
 
         return permGroup;
+    }
+
+    @Override
+    public PermissionsWorld loadWorld(String world) {
+
+        world = world.toLowerCase();
+
+        if(this.permissionsFiles.containsKey(world)) return null;
+
+        if(Files.notExists(Paths.get(plugin.getDataFolder().getAbsolutePath() + "/worlds/" + world + ".yml"))) plugin.saveResource("permissions.yml", "worlds/" + world + ".yml", false);
+
+        this.permissionsFiles.put(world, new Config(plugin.getDataFolder().getAbsolutePath() + "/worlds/" + world + ".yml"));
+
+        Config permFile = this.permissionsFiles.get(world);
+
+        return new PermissionsWorld(
+                world,
+                permFile.get("default").toString().toLowerCase()
+        );
+
     }
 
     @Override

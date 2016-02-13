@@ -2,6 +2,7 @@ package cc.leet.leetperms.persistence;
 
 import cc.leet.leetperms.data.PermissionsGroup;
 import cc.leet.leetperms.data.PermissionsWorld;
+import cn.nukkit.utils.Config;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +10,8 @@ import java.util.HashMap;
 public interface DataProvider {
 
     ArrayList<PermissionsGroup> getGroups();
+
+    ArrayList<PermissionsGroup> getGroupsFromWorld(String world);
 
     HashMap<String, Object> getPlayer(String player, String world);
 
@@ -25,6 +28,8 @@ public interface DataProvider {
     boolean addGroup(String group, String world, HashMap<String, Object> meta);
 
     PermissionsGroup loadGroup(String group, String world);
+
+    PermissionsWorld loadWorld(String world);
 
     ArrayList<PermissionsWorld> getWorlds();
 
