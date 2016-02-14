@@ -103,10 +103,10 @@ public class LpGroupInfoCommand extends Command {
         }
 
         sender.sendMessage(TextFormat.GREEN + "Permissions granted:");
-        sender.sendMessage(TextFormat.AQUA + allowedMsg.toString().substring(0, allowedMsg.length() - 2));
+        sender.sendMessage(TextFormat.AQUA + (allowedMsg.length() > 0 ? allowedMsg.toString().substring(0, allowedMsg.length() - 2) : "No permissions."));
 
         sender.sendMessage(TextFormat.RED + "Permissions negated:");
-        sender.sendMessage(TextFormat.AQUA + deniedMsg.toString().substring(0, deniedMsg.length() - 2));
+        sender.sendMessage(TextFormat.AQUA + (deniedMsg.length() > 0 ? deniedMsg.toString().substring(0, deniedMsg.length() - 2) : "No negated permissions."));
 
         return true;
     }
