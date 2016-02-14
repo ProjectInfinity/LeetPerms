@@ -177,14 +177,17 @@ public class DataManager {
             }
 
             int i = 1;
+            Map<String, PermissionsGroup> temp = new HashMap<>();
+
             while(true) {
                 if(i > 499) {
                     plugin.getLogger().alert("Detected infinite loop while iterating " + rootName);
                     break;
                 }
                 int size = inheritanceMap.size();
-                Map<String, PermissionsGroup> temp = new HashMap<>();
+                temp.clear();
                 for(PermissionsGroup group : inheritanceMap.values()) {
+                    if(group == null) continue;
                     for(String inherit : group.getGroupInheritance()) {
                         temp.put(inherit, this.groups.get(group.getGroupWorld() + "_" + inherit));
                     }
@@ -194,15 +197,48 @@ public class DataManager {
                 i++;
             }
 
-            // TODO: This doesn't sort by who is a higher rank than others...
+           Queue<PermissionsGroup> queue = new LinkedList<>();
+            boolean error = false;
+            i = 0;
+            while(!error) {
+                i++;
+                if(i > 499) {
+                    plugin.getLogger().alert("Permissions inheritance sorting hit a infinite loop for group " + rootName);
+                    break;
+                }
+                for(PermissionsGroup parent : new ArrayList<>(inheritanceMap.values())) {
+                    if(parent == null) continue;
+                    if(parent.getGroupInheritance().isEmpty()) {
+                        if(queue.contains(parent)) continue;
+                        queue.add(parent);
+                        inheritanceMap.remove(parent.getGroupName());
+                        continue;
+                    }
+                    PermissionsGroup prev = parent;
+                    while(!prev.getGroupInheritance().isEmpty()) {
+                        if(inheritanceMap.get(prev.getGroupInheritance().get(0)) == null) break;
+                        prev = inheritanceMap.get(prev.getGroupInheritance().get(0));
+                    }
+                    if(queue.contains(prev)) continue;
+                    queue.add(prev);
+                }
+                error = true;
+            }
+
+            queue.add(rootGroup);
 
             System.out.println(rootName + " will inherit:");
-            System.out.println(inheritanceMap.keySet().toString());
+
+            StringBuilder sb = new StringBuilder();
+            for(PermissionsGroup group : queue) {
+                sb.append(group.getGroupName()).append(", ");
+            }
+            System.out.println(sb.toString().substring(0, sb.length() - 2));
 
             System.out.println("Permissions prior to merge:" + rootGroup.getGroupPermissions().toString());
 
             HashMap<String, Boolean> permissions = new HashMap<>();
-            for(PermissionsGroup group : inheritanceMap.values()) permissions.putAll(group.getGroupPermissions());
+            for(PermissionsGroup group : queue) permissions.putAll(group.getGroupPermissions());
             permissions.putAll(rootGroup.getGroupPermissions());
 
             rootGroup.setGroupPermissions(permissions);
