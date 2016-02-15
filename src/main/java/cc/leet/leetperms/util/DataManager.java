@@ -75,14 +75,21 @@ public class DataManager {
         return this.attachments.containsKey(player.toLowerCase());
     }
 
+    private void makeChangesActive(String world) {
+        this.reloadGroups();
+        this.recalculatePermissions();
+        if(plugin.getServer().getLevelByName(world) != null) this.updatePermissions(plugin.getServer().getLevelByName(world));
+    }
+
     public boolean setPermission(String group, String world, String permission) {
         boolean result = this.provider.setPermission(group, world, permission);
-        if(result) {
-            // All done, now recalculate permissions and update player permissions.
-            this.reloadGroups();
-            this.recalculatePermissions();
-            if(plugin.getServer().getLevelByName(world) != null) this.updatePermissions(plugin.getServer().getLevelByName(world));
-        }
+        if(result) makeChangesActive(world);
+        return result;
+    }
+
+    public boolean removePermission(String group, String world, String permission) {
+        boolean result = this.provider.removePermission(group, world, permission);
+        if(result) makeChangesActive(world);
         return result;
     }
 

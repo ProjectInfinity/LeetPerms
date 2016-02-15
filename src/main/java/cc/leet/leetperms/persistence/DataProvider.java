@@ -17,6 +17,8 @@ public interface DataProvider {
 
     boolean setPermission(String group, String world, String permission);
 
+    boolean removePermission(String group, String world, String permission);
+
     boolean setPlayerPermission(String player, String world, String permission);
 
     String getPlayerGroup(String player, String world);

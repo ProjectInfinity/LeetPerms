@@ -30,3 +30,6 @@ permissions:
   leetperms.lpsetperm:
     description: 'Allows setting permission nodes.'
     default: op
+  leetperms.lpdelperm:
+    description: 'Allows deleting permission nodes.'
+    default: op
