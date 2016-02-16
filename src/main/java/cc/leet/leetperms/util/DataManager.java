@@ -135,6 +135,14 @@ public class DataManager {
         this.attachments.remove(player.toLowerCase());
     }
 
+    public boolean deleteGroup(String group, String world) {
+        if(this.provider.deleteGroup(group, world)) {
+            this.makeChangesActive(world);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Reloads the groups from the provider and puts them into the map.
      */

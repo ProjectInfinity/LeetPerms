@@ -29,6 +29,8 @@ public interface DataProvider {
 
     boolean addGroup(String group, String world, HashMap<String, Object> meta);
 
+    boolean deleteGroup(String group, String world);
+
     PermissionsGroup loadGroup(String group, String world);
 
     PermissionsWorld loadWorld(String world);

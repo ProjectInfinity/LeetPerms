@@ -297,6 +297,42 @@ public class YamlDataProvider implements DataProvider {
         return permFile.get("groups." + group) != null;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean deleteGroup(String group, String world) {
+
+        group = group.toLowerCase();
+        world = world.toLowerCase();
+
+        if(!this.permissionsFiles.containsKey(world)) return false;
+
+        Config permFile = this.permissionsFiles.get(world);
+
+        permFile.remove("groups." + group);
+
+        // Remove group from groups inheriting it.
+        for(Map.Entry<String, Map> entry : new ArrayList<>(((Map<String, Map>) permFile.get("groups")).entrySet())) {
+            if(!(entry.getValue().get("inheritance") instanceof ArrayList)) continue;
+            ArrayList inheritance = (ArrayList) entry.getValue().get("inheritance");
+            if(!inheritance.contains(group)) continue;
+            inheritance.remove(group);
+            permFile.set("groups." + entry.getKey() + ".inheritance", inheritance);
+        }
+
+        String defaultGroup = permFile.getString("default");
+
+        // Change players with this group to default.
+        for(Map.Entry<String, Map> entry : new ArrayList<>(((Map<String, Map>) permFile.get("users")).entrySet())) {
+            if(!entry.getValue().get("group").toString().equalsIgnoreCase(group)) continue;
+            permFile.set("users." + entry.getKey() + ".group", defaultGroup);
+        }
+
+        if(plugin.autoSave) permFile.save();
+
+        return permFile.get("groups." + group) == null;
+
+    }
+
     @Override
     public PermissionsGroup loadGroup(String group, String world) {
 
