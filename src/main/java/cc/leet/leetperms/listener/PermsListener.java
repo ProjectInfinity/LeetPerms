@@ -28,6 +28,7 @@ public class PermsListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
         plugin.getDataManager().removeAttachment(event.getPlayer().getName());
+        plugin.getDataManager().updateLastLogin(event.getPlayer().getName());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

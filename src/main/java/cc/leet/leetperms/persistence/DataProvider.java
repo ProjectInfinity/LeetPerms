@@ -39,4 +39,6 @@ public interface DataProvider {
 
     void close();
 
+    void updateLastLogin(String player);
+
 }

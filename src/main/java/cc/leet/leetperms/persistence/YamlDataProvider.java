@@ -458,6 +458,16 @@ public class YamlDataProvider implements DataProvider {
         permissionsFiles.values().forEach(Config::save);
     }
 
+    @Override
+    public void updateLastLogin(String player) {
+        player = player.toLowerCase();
+        for(Config permFile : permissionsFiles.values()) {
+            if(permFile.get("users." + player) == null) continue;
+            permFile.set("users." + player + ".meta.last-login", System.currentTimeMillis());
+            if(plugin.autoSave) permFile.save();
+        }
+    }
+
     public void save() {
         permissionsFiles.values().forEach(Config::save);
     }
