@@ -167,10 +167,14 @@ public class DataManager {
         }
     }
 
+    public void recalculatePermissions() {
+        this.recalculatePermissions("", true);
+    }
+
     /**
      * Combine permission nodes from inheritance etc.
      */
-    public void recalculatePermissions() {
+    public void recalculatePermissions(String world, boolean handleAll) {
 
         // TODO: Handle "*"
 
@@ -180,13 +184,14 @@ public class DataManager {
             start = System.nanoTime();
         }
 
-        // TODO: Need a way to skip the groups that are not part of the target world.
         for(Map.Entry<String, PermissionsGroup> entry : this.groups.entrySet()) {
 
             Map<String, PermissionsGroup> inheritanceMap = new TreeMap<>();
 
             PermissionsGroup rootGroup = entry.getValue();
             String rootName = entry.getKey();
+
+            if(!handleAll && !world.equalsIgnoreCase(rootGroup.getGroupWorld())) continue;
 
             if(rootGroup.getGroupInheritance().size() == 0) continue;
 
