@@ -24,6 +24,8 @@ public class LpReloadCommand extends Command {
             return true;
         }
 
+        LeetPerms.getPlugin().reloadSettings();
+
         dataManager.reloadWorlds();
         dataManager.reloadGroups();
         dataManager.recalculatePermissions();
