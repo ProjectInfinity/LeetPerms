@@ -10,7 +10,10 @@ import cc.leet.leetperms.persistence.YamlDataProvider;
 import cn.nukkit.Player;
 import cn.nukkit.level.Level;
 import cn.nukkit.permission.PermissionAttachment;
+import cn.nukkit.utils.Config;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class DataManager {
@@ -28,12 +31,30 @@ public class DataManager {
 
     private DataProvider provider;
 
+    public static HashMap<String, String> mirroredWorlds;
+
     public DataManager(LeetPerms plugin) {
         this.plugin = plugin;
         this.groups = new HashMap<>();
         this.worlds = new HashMap<>();
         this.players = new HashMap<>();
         this.attachments = new HashMap<>();
+        mirroredWorlds = new HashMap<>();
+
+        if(plugin.isMirrorsEnabled) {
+            if(Files.notExists(Paths.get(plugin.getDataFolder().getAbsolutePath() + "/mirrors.yml"))) plugin.saveResource("mirrors.yml");
+            Config mirrors = new Config(plugin.getDataFolder().getAbsolutePath() + "/mirrors.yml");
+            for(Map.Entry<String, Object> entry : mirrors.getAll().entrySet()) {
+                if(mirroredWorlds.containsKey(entry.getKey()) || (entry.getKey().equalsIgnoreCase(entry.getValue().toString()))) {
+                    plugin.getLogger().alert("Skipping world mirror for " + entry.getKey() + ", mirror was: " + entry.getValue().toString());
+                    continue;
+                }
+                if(plugin.debug) plugin.getLogger().info(entry.getKey() + " will mirror " + entry.getValue().toString() + ".");
+                mirroredWorlds.put(entry.getKey().toLowerCase(), entry.getValue().toString().toLowerCase());
+            }
+
+        }
+
         /**
          * TODO: This needs to be possible to change
          * whenever other data providers are supported.
@@ -255,7 +276,7 @@ public class DataManager {
 
             queue.add(rootGroup);
 
-            System.out.println(rootName + " will inherit:");
+            /*System.out.println(rootName + " will inherit:");
 
             StringBuilder sb = new StringBuilder();
             for(PermissionsGroup group : queue) {
@@ -263,7 +284,7 @@ public class DataManager {
             }
             System.out.println(sb.toString().substring(0, sb.length() - 2));
 
-            System.out.println("Permissions prior to merge:" + rootGroup.getGroupPermissions().toString());
+            System.out.println("Permissions prior to merge:" + rootGroup.getGroupPermissions().toString()); */
 
             HashMap<String, Boolean> permissions = new HashMap<>();
             for(PermissionsGroup group : queue) permissions.putAll(group.getGroupPermissions());
@@ -273,8 +294,8 @@ public class DataManager {
 
             this.groups.put(rootName, rootGroup);
 
-            System.out.println("Permissions after merge: " + rootGroup.getGroupPermissions().entrySet().toString());
-            System.out.println("--------------------------------------");
+            /*System.out.println("Permissions after merge: " + rootGroup.getGroupPermissions().entrySet().toString());
+            System.out.println("--------------------------------------"); */
 
         }
 

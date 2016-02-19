@@ -3,7 +3,9 @@ package cc.leet.leetperms.persistence;
 import cc.leet.leetperms.LeetPerms;
 import cc.leet.leetperms.data.PermissionsGroup;
 import cc.leet.leetperms.data.PermissionsWorld;
+import cc.leet.leetperms.util.DataManager;
 import cc.leet.leetperms.util.ToolBox;
+
 import cn.nukkit.level.Level;
 import cn.nukkit.utils.Config;
 
@@ -49,6 +51,13 @@ public class YamlDataProvider implements DataProvider {
             } catch(IOException e) {
                 plugin.getLogger().critical("Failed to load a permissions file!");
                 e.printStackTrace();
+            }
+            // Figure out what needs to be mirrored so we can just point the permissions file to the target world.
+            if(!DataManager.mirroredWorlds.isEmpty()) {
+                for(Map.Entry<String, String> entry : DataManager.mirroredWorlds.entrySet()) {
+                    if(!this.permissionsFiles.containsKey(entry.getKey()) || !this.permissionsFiles.containsKey(entry.getValue())) continue;
+                    this.permissionsFiles.put(entry.getKey(), this.permissionsFiles.get(entry.getValue()));
+                }
             }
         }
     }
@@ -186,6 +195,10 @@ public class YamlDataProvider implements DataProvider {
         List<String> permissions = permFile.getStringList("groups." + group + ".permissions");
 
         if(permissions.contains(permission)) return false;
+
+        if(permissions.contains("^" + permission)) permissions.remove("^" + permission);
+
+        if(permission.startsWith("^") && permissions.contains(permission.substring(1))) permissions.remove(permission.substring(1));
 
         permissions.add(permission);
 

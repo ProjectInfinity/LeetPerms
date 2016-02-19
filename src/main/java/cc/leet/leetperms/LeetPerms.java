@@ -15,6 +15,7 @@ public class LeetPerms extends PluginBase {
     public boolean autoSave;
     public boolean debug;
     public boolean isPermissionsLocked;
+    public boolean isMirrorsEnabled;
 
     public String dataProviderType;
 
@@ -59,6 +60,7 @@ public class LeetPerms extends PluginBase {
         debug = getConfig().getBoolean("debug", false);
         isPermissionsLocked = getConfig().getBoolean("lock-permission-files", false);
         dataProviderType = getConfig().getString("data-provider", "yaml");
+        isMirrorsEnabled = getConfig().getBoolean("enable-mirrors", false);
     }
 
     public static LeetPerms getPlugin() {
