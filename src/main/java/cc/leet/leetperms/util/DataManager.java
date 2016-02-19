@@ -77,7 +77,7 @@ public class DataManager {
 
     private void makeChangesActive(String world) {
         this.reloadGroups();
-        this.recalculatePermissions();
+        this.recalculatePermissions(world);
         if(plugin.getServer().getLevelByName(world) != null) this.updatePermissions(plugin.getServer().getLevelByName(world));
     }
 
@@ -168,13 +168,13 @@ public class DataManager {
     }
 
     public void recalculatePermissions() {
-        this.recalculatePermissions("", true);
+        this.recalculatePermissions(null);
     }
 
     /**
      * Combine permission nodes from inheritance etc.
      */
-    public void recalculatePermissions(String world, boolean handleAll) {
+    public void recalculatePermissions(String world) {
 
         // TODO: Handle "*"
 
@@ -191,7 +191,7 @@ public class DataManager {
             PermissionsGroup rootGroup = entry.getValue();
             String rootName = entry.getKey();
 
-            if(!handleAll && !world.equalsIgnoreCase(rootGroup.getGroupWorld())) continue;
+            if(world != null && !world.equalsIgnoreCase(rootGroup.getGroupWorld())) continue;
 
             if(rootGroup.getGroupInheritance().size() == 0) continue;
 
@@ -357,6 +357,8 @@ public class DataManager {
 
         this.provider.setDefaultGroup(group, world);
 
+        this.makeChangesActive(world);
+
         return this.worlds.get(world).getDefaultGroup().equalsIgnoreCase(group);
     }
 
@@ -388,7 +390,11 @@ public class DataManager {
     }
 
     public boolean addGroup(String group, String world, HashMap<String, Object> meta) {
-        return !(groupExists(group, world) || !worldExists(world)) && this.provider.addGroup(group, world, meta);
+        if(!(groupExists(group, world) || !worldExists(world)) && this.provider.addGroup(group, world, meta)) {
+            this.makeChangesActive(world);
+            return true;
+        }
+        return false;
     }
 
     public void addGroupToMap(PermissionsGroup permGroup) {
