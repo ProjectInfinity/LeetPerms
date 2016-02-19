@@ -93,6 +93,10 @@ public class DataManager {
         return result;
     }
 
+    public void updatePermissions() {
+        plugin.getServer().getLevels().values().forEach(this::updatePermissions);
+    }
+
     public void updatePermissions(Player player) {
         this.updatePermissions(player.getName(), (plugin.globalPerms ? "global" : player.getLevel().getName()));
     }

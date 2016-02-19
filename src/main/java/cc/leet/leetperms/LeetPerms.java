@@ -40,6 +40,7 @@ public class LeetPerms extends PluginBase {
             getServer().getCommandMap().register("lpdelgroup", new LpDelGroupCommand(plugin));
             getServer().getCommandMap().register("lpsetperm", new LpSetPermCommand(plugin));
             getServer().getCommandMap().register("lpdelperm", new LpDelPermCommand(plugin));
+            getServer().getCommandMap().register("lpreload", new LpReloadCommand(plugin));
         }
         /** Done registering commands **/
 
