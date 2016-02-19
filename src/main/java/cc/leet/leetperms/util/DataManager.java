@@ -418,6 +418,8 @@ public class DataManager {
     }
 
     public void shutdown() {
+        this.worlds.clear();
+        this.groups.clear();
         provider.close();
     }
 
