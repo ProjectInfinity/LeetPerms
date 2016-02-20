@@ -4,12 +4,14 @@ import cc.leet.leetperms.command.*;
 import cc.leet.leetperms.listener.PermsListener;
 import cc.leet.leetperms.util.DataManager;
 
+import cc.leet.leetperms.util.PermissionAPI;
 import cn.nukkit.plugin.PluginBase;
 
 public class LeetPerms extends PluginBase {
 
     private static LeetPerms plugin;
     private DataManager dataManager;
+    private static PermissionAPI api;
 
     public boolean globalPerms;
     public boolean autoSave;
@@ -26,6 +28,7 @@ public class LeetPerms extends PluginBase {
         reloadSettings();
 
         dataManager = new DataManager(plugin);
+        api = new PermissionAPI();
 
         /** Register all commands **/
         getServer().getCommandMap().register("lpinfo", new LpInfoCommand(plugin));
@@ -70,6 +73,10 @@ public class LeetPerms extends PluginBase {
 
     public DataManager getDataManager() {
         return dataManager;
+    }
+
+    public static PermissionAPI getAPI() {
+        return api;
     }
 
 }
