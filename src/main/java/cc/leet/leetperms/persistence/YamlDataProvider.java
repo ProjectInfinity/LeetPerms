@@ -273,6 +273,15 @@ public class YamlDataProvider implements DataProvider {
     }
 
     @Override
+    public boolean setInheritance(String group, String world, String[] groups) {
+        world = plugin.globalPerms ? "permissions" : world.toLowerCase();
+        if(!this.permissionsFiles.containsKey(world)) return false;
+        this.permissionsFiles.get(world).set("groups." + group.toLowerCase() + ".inheritance", groups);
+        if(plugin.autoSave) this.permissionsFiles.get(world).save();
+        return this.permissionsFiles.get(world).get("groups." + group.toLowerCase() + ".inheritance").equals(groups);
+    }
+
+    @Override
     public boolean addGroup(String group, String world, HashMap<String, Object> meta) {
         group = group.toLowerCase();
         world = plugin.globalPerms ? "permissions" : world.toLowerCase();

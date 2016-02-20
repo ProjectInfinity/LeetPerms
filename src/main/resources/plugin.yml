@@ -39,3 +39,6 @@ permissions:
   leetperms.lpreload:
     description: 'Allows reloading everything.'
     default: op
+  leetperms.lpinherit:
+    description: 'Allows setting the inheritance for a group.'
+    default: op

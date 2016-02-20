@@ -108,6 +108,12 @@ public class DataManager {
         return result;
     }
 
+    public boolean setInheritance(String group, String world, String[] groups) {
+        boolean result = this.provider.setInheritance(group, world, groups);
+        if(result) makeChangesActive(world);
+        return result;
+    }
+
     public boolean removePermission(String group, String world, String permission) {
         boolean result = this.provider.removePermission(group, world, permission);
         if(result) makeChangesActive(world);
@@ -202,6 +208,7 @@ public class DataManager {
     public void recalculatePermissions(String world) {
 
         // TODO: Handle "*"
+        // TODO: When group X inherits group Y that inherits group X, then a infinite loop happens somewhere.
 
         double start = 0D;
 
