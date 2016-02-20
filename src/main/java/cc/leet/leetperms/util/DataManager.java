@@ -207,9 +207,6 @@ public class DataManager {
      */
     public void recalculatePermissions(String world) {
 
-        // TODO: Handle "*"
-        // TODO: When group X inherits group Y that inherits group X, then a infinite loop happens somewhere.
-
         double start = 0D;
 
         if(plugin.debug) {
@@ -272,6 +269,7 @@ public class DataManager {
                     }
                     PermissionsGroup prev = parent;
                     while(!prev.getGroupInheritance().isEmpty()) {
+                        if(prev.getGroupInheritance().contains(prev.getGroupName())) prev.getGroupInheritance().remove(prev.getGroupName());
                         if(inheritanceMap.get(prev.getGroupInheritance().get(0)) == null) break;
                         prev = inheritanceMap.get(prev.getGroupInheritance().get(0));
                     }
