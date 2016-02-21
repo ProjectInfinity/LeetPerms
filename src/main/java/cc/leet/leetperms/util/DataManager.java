@@ -108,6 +108,12 @@ public class DataManager {
         return result;
     }
 
+    public boolean setPlayerPermission(String player, String world, String permission) {
+        boolean result = this.provider.setPlayerPermission(player, world, permission);
+        if(result) updatePermissions(player, world);
+        return result;
+    }
+
     public boolean setInheritance(String group, String world, String[] groups) {
         boolean result = this.provider.setInheritance(group, world, groups);
         if(result) makeChangesActive(world);

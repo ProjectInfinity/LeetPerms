@@ -236,7 +236,30 @@ public class YamlDataProvider implements DataProvider {
 
     @Override
     public boolean setPlayerPermission(String player, String world, String permission) {
-        return false; // TODO: Create setPlayerPermission logic.
+
+        player = player.toLowerCase();
+        world = world.toLowerCase();
+
+        if(!this.permissionsFiles.containsKey(plugin.globalPerms ? "permissions" : world)) return false;
+
+        Config permFile = this.permissionsFiles.get((plugin.globalPerms ? "permissions" : world));
+
+        List<String> permissions = permFile.getStringList("users." + player + ".permissions");
+
+        if(permissions.contains(permission)) return false;
+
+        if(permissions.contains("^" + permission)) permissions.remove("^" + permission);
+
+        if(permission.startsWith("^") && permissions.contains(permission.substring(1))) permissions.remove(permission.substring(1));
+
+        permissions.add(permission);
+
+        permFile.set("users." + player + ".permissions", permissions);
+
+        if(plugin.autoSave) permFile.save();
+
+        return permFile.getStringList("users." + player + ".permissions").contains(permission);
+
     }
 
     @Override
