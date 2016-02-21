@@ -128,6 +128,12 @@ public class DataManager {
         return result;
     }
 
+    public boolean setPrefix(String group, String world, String prefix) {
+        boolean result = this.provider.setPrefix(group, world, prefix);
+        if(result) makeChangesActive(world);
+        return result;
+    }
+
     public boolean setInheritance(String group, String world, String[] groups) {
         boolean result = this.provider.setInheritance(group, world, groups);
         if(result) makeChangesActive(world);

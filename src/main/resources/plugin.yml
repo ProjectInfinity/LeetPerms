@@ -45,3 +45,6 @@ permissions:
   leetperms.lpsetplayerperm:
     description: 'Allows setting a permission node to a player.'
     default: op
+  leetperms.lpsetprefix:
+    description: 'Allows changing the prefix of a group.'
+    default: op

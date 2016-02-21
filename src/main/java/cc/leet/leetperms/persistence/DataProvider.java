@@ -27,6 +27,8 @@ public interface DataProvider {
 
     void setDefaultGroup(String group, String world);
 
+    boolean setPrefix(String group, String world, String prefix);
+
     boolean setInheritance(String group, String world, String[] groups);
 
     boolean addGroup(String group, String world, HashMap<String, Object> meta);
