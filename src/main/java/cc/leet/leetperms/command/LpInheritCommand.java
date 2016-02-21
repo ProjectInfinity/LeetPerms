@@ -28,12 +28,12 @@ public class LpInheritCommand extends Command {
         }
 
         if(args.length < 3 && !plugin.globalPerms) {
-            sender.sendMessage(TextFormat.RED + "Type /lpsetgroup [group] [world] [groups to inherit]");
+            sender.sendMessage(TextFormat.RED + "Type /lpinherit [group] [world] [groups to inherit]");
             return true;
         }
 
         if(args.length < 2 && plugin.globalPerms) {
-            sender.sendMessage(TextFormat.RED + "Type /lpsetgroup [group] [groups to inherit]");
+            sender.sendMessage(TextFormat.RED + "Type /lpinherit [group] [groups to inherit]");
             return true;
         }
 
@@ -84,7 +84,6 @@ public class LpInheritCommand extends Command {
                     TextFormat.RED + " in " + TextFormat.AQUA + world + TextFormat.RED + ".");
 
         return true;
-
 
     }
 }
