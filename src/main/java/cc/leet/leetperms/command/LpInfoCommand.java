@@ -66,7 +66,7 @@ public class LpInfoCommand extends Command {
         }
 
         if(permPlayer != null) {
-            permissions.putAll(plugin.getDataManager().getGroup(permPlayer.getGroupPointer()).getGroupPermissions());
+            if(plugin.getDataManager().groupExists(permPlayer.getPlayerGroup() , permPlayer.getPlayerWorld())) permissions.putAll(plugin.getDataManager().getGroup(permPlayer.getGroupPointer()).getGroupPermissions());
             permissions.putAll(permPlayer.getPlayerPermissions());
         }
 
@@ -101,10 +101,10 @@ public class LpInfoCommand extends Command {
         if(permPlayer != null) sender.sendMessage(TextFormat.YELLOW + "Group: " + TextFormat.AQUA + permPlayer.getPlayerGroup());
 
         sender.sendMessage(TextFormat.GREEN + "Permissions granted:");
-        sender.sendMessage(TextFormat.AQUA + allowedMsg.toString().substring(0, allowedMsg.length() - 2));
+        sender.sendMessage(TextFormat.AQUA + (allowedMsg.length() > 0 ? allowedMsg.toString().substring(0, allowedMsg.length() - 2) : "No permissions."));
 
         sender.sendMessage(TextFormat.RED + "Permissions negated:");
-        sender.sendMessage(TextFormat.AQUA + deniedMsg.toString().substring(0, deniedMsg.length() - 2));
+        sender.sendMessage(TextFormat.AQUA + (deniedMsg.length() > 0 ? deniedMsg.toString().substring(0, deniedMsg.length() - 2) : "No negated permissions."));
 
         return true;
 
