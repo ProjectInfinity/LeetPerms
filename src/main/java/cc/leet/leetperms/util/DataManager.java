@@ -110,7 +110,11 @@ public class DataManager {
 
     public boolean setPlayerPermission(String player, String world, String permission) {
         boolean result = this.provider.setPlayerPermission(player, world, permission);
-        if(result) updatePermissions(player, world);
+        if(result) {
+            if(this.players.containsKey(world + "_" + player)) this.players.remove(world + "_" + player);
+            this.players.put(world + "_" + player, this.getPlayer(player, world));
+            this.updatePermissions(player, world);
+        }
         return result;
     }
 
