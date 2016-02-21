@@ -59,7 +59,7 @@ public class LpInheritCommand extends Command {
                 continue;
             }
 
-            if(arg.equalsIgnoreCase("*NONE*")) break;
+            if(arg.equalsIgnoreCase("*CLEAR*")) break;
 
             if(arg.equalsIgnoreCase(group)) {
                 sender.sendMessage(TextFormat.RED + "Tried to inherit the target group. Please revise your inheritance.");
