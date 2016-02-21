@@ -78,6 +78,16 @@ public class DataManager {
 
     }
 
+    /**
+     * Cleans up a player from the player array.
+     *
+     * @param player Player object
+     */
+    public void cleanup(Player player) {
+        if(!this.players.containsKey(player.getLevel().getName() + "_" + player.getName())) return;
+        this.players.remove(player.getLevel().getName() + "_" + player.getName());
+    }
+
     public DataProvider getDataProvider() {
         return this.provider;
     }
@@ -185,6 +195,11 @@ public class DataManager {
     }
 
     public void updateLastLogin(String player) {
+        player = player.toLowerCase();
+        for(String world : this.worlds.keySet()) {
+            if(!this.players.containsKey(world + "_" + player)) continue;
+            this.players.get(world + "_" + player).setLastLogin(System.currentTimeMillis());
+        }
         this.provider.updateLastLogin(player);
     }
 

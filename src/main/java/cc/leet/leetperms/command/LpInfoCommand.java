@@ -2,6 +2,7 @@ package cc.leet.leetperms.command;
 
 import cc.leet.leetperms.LeetPerms;
 import cc.leet.leetperms.data.PermissionsPlayer;
+import cc.leet.leetperms.util.ToolBox;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -98,7 +99,10 @@ public class LpInfoCommand extends Command {
 
         sender.sendMessage(TextFormat.YELLOW + "Permission data for " + TextFormat.AQUA + target +
                 TextFormat.YELLOW + " in world " + TextFormat.AQUA + world + TextFormat.YELLOW + ":");
-        if(permPlayer != null) sender.sendMessage(TextFormat.YELLOW + "Group: " + TextFormat.AQUA + permPlayer.getPlayerGroup());
+        if(permPlayer != null) {
+            sender.sendMessage(TextFormat.YELLOW + "Group: " + TextFormat.AQUA + permPlayer.getPlayerGroup());
+            if(permPlayer.getLastLogin() != 0L) sender.sendMessage(TextFormat.YELLOW + "Last login: " + ToolBox.getTimeAgo(permPlayer.getLastLogin()));
+        }
 
         sender.sendMessage(TextFormat.GREEN + "Permissions granted:");
         sender.sendMessage(TextFormat.AQUA + (allowedMsg.length() > 0 ? allowedMsg.toString().substring(0, allowedMsg.length() - 2) : "No permissions."));
