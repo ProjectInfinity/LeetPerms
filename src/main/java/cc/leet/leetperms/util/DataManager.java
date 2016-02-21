@@ -347,7 +347,7 @@ public class DataManager {
 
                 if(data.get("meta") instanceof LinkedHashMap) {
                     LinkedHashMap meta = (LinkedHashMap) data.get("meta");
-                    if(meta.containsKey("last-login")) permPlayer.setLastLogin((int) meta.get("last-login"));
+                    if(meta.containsKey("last-login")) permPlayer.setLastLogin((long) meta.get("last-login"));
                 }
             }
             this.players.put(world + "_" + player, permPlayer);

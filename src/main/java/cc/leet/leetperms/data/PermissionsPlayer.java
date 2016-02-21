@@ -11,7 +11,7 @@ public class PermissionsPlayer {
 
     private HashMap<String, Boolean> playerPermissions;
 
-    private int lastLogin;
+    private long lastLogin;
 
     public PermissionsPlayer() {
         this.playerPermissions = new HashMap<>();
@@ -69,11 +69,11 @@ public class PermissionsPlayer {
         this.groupPointer = groupPointer;
     }
 
-    public int getLastLogin() {
+    public long getLastLogin() {
         return lastLogin;
     }
 
-    public void setLastLogin(int lastLogin) {
+    public void setLastLogin(long lastLogin) {
         this.lastLogin = lastLogin;
     }
 }
