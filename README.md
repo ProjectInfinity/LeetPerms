@@ -276,7 +276,7 @@ import cc.leet.leetperms.util.DataManager;
 then somewhere in your code do
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-DataManager dataManger = LeetPerms.getPlugin().getDataManager();
+DataManager dataManager = LeetPerms.getPlugin().getDataManager();
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  
