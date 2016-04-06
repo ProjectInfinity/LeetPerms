@@ -13,7 +13,7 @@ public class LpDelPermCommand extends Command {
     private DataManager dataManager;
 
     public LpDelPermCommand(LeetPerms plugin) {
-        super("lpdelperm", "Deletes a permission node", "/lpdelperm [group] [permission.node [world]", new String[]{"lpdelnode"});
+        super("lpdelperm", "Deletes a permission node", "/lpdelperm [group] [permission.node] [world]", new String[]{"lpdelnode"});
         this.plugin = plugin;
         this.dataManager = plugin.getDataManager();
     }
