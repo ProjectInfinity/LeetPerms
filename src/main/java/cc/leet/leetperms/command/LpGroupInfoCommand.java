@@ -17,7 +17,7 @@ public class LpGroupInfoCommand extends Command {
     private DataManager dataManager;
 
     public LpGroupInfoCommand(LeetPerms plugin) {
-        super("lpgroupinfo", "Views information about a group", "");
+        super("lpgroupinfo", "Views information about a group", "/lpgroupinfo [group] [world]");
         this.plugin = plugin;
         this.dataManager = plugin.getDataManager();
     }
